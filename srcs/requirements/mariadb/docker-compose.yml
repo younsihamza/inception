@@ -1,0 +1,12 @@
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    restart: on-failure
+    environment:
+      MARIADB_ROOT_PASSWORD: password
+  adminer:
+    image: adminer
+    restart: on-failure
+    ports:
+      - 8000:8080
