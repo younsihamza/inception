@@ -7,6 +7,7 @@ RUN mkdir /etc/nginx/ssl
 COPY ./conf/* /etc/nginx/ssl/
 
 
+
 # COPY ./conf/* /etc/nginx/ssl/
 # RUN bin/sh -c /bin/sh -c chmod 644 /etc/nginx/ssl/cent.pem
 
