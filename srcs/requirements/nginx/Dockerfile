@@ -1,28 +1,18 @@
-FROM debian:11.8
+FROM debian:bullseye
 
-RUN apt update && apt install nginx openssl -y 
+RUN apt  update && apt install -y nginx openssl
 
-RUN mkdir /etc/nginx/ssl
+RUN mkdir -p /etc/nginx/ssl
 
-COPY ./conf/* /etc/nginx/ssl/
+RUN openssl req -x509  -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=FR/ST=IDF/L=Paris/O=42/OU=42/CN=login.42.fr/UID=login"
+
+RUN mkdir -p /var/run/nginx
 
 
+COPY conf/nginx.conf /etc/nginx/nginx.conf
 
-# COPY ./conf/* /etc/nginx/ssl/
-# RUN bin/sh -c /bin/sh -c chmod 644 /etc/nginx/ssl/cent.pem
+RUN chmod 755 /var/www/html
 
-RUN echo -n "http { \n\
-    server { \n\
-    listen 443 ssl; \n\
-    server_name hyounsi.42.fr; \n\
-    root html; \n\
-    ssl_certificate /etc/nginx/ssl/hyounsi.42.fd.pem; \n\
-    ssl_certificate_key /etc/nginx/ssl/hyounsi.42.fd-key.pem; \n\
-    location / { \n\
-        \n\
-    } \n\
-} }\n\
-events {}\n" > /etc/nginx/nginx.conf
+RUN chown -R www-data:www-data /var/www/html
 
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
-
+CMD [ "nginx", "-g", "daemon off;" ]
