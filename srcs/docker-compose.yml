@@ -13,31 +13,48 @@ services:
       - wordpress
     restart: always
     volumes:
-      - ./wordpress:/var/www/wordpress
+      - /home/hyounsi/data/wordpress:/var/www/wordpress
   mariadb:
     container_name: mariadb
-    build: ./requirements/mariadb
+    build: 
+        context: ./requirements/mariadb/.
+        args:
+          DATABASE_NAME: ${DATABASE_NAME}
+          DATABASE_USER_NAME: ${DATABASE_USER_NAME}
+          DATABASE_USER_PASSWORD: ${DATABASE_USER_PASSWORD}
+          DATABASE_ROOT_PASS: ${DATABASE_ROOT_PASS}
     networks:
       - inception
-    # volumes:
-    #   - ./mariadb:/var/lib/mysql
-    env_file:
-      - .env
+    volumes:
+      - mariadb:/var/lib/mysql
     restart: always
   wordpress:
+    env_file:
+      - .env
     container_name: wordpress
     build: ./requirements/wordpress/.
     networks:
       - inception
     volumes:
-      - ./wordpress:/var/www/wordpress
+      - wordpress:/var/www/wordpress
     depends_on:
       - mariadb
     restart: on-failure
-    env_file:
-      - .env
 networks:
   inception:
+volumes:
+  mariadb:
+    driver: local 
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/hyounsi/data/mariadb'
+  wordpress:
+    driver: local 
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/hyounsi/data/wordpress' 
 
     
     
