@@ -5,6 +5,7 @@ services:
     networks:
       - inception
     build: ./requirements/nginx/.
+    image: nginx:hyounsi
     env_file:
       - .env
     ports:
@@ -23,6 +24,7 @@ services:
           DATABASE_USER_NAME: ${DATABASE_USER_NAME}
           DATABASE_USER_PASSWORD: ${DATABASE_USER_PASSWORD}
           DATABASE_ROOT_PASS: ${DATABASE_ROOT_PASS}
+    image: mariadb:hyounsi
     networks:
       - inception
     volumes:
@@ -33,6 +35,7 @@ services:
       - .env
     container_name: wordpress
     build: ./requirements/wordpress/.
+    image: wordpress:hyounsi
     networks:
       - inception
     volumes:
@@ -42,14 +45,18 @@ services:
     restart: on-failure
 networks:
   inception:
+    name: inception
+
 volumes:
   mariadb:
+    name: mariadb
     driver: local 
     driver_opts:
       type: 'none'
       o: 'bind'
       device: '/home/hyounsi/data/mariadb'
   wordpress:
+    name: wordpress
     driver: local 
     driver_opts:
       type: 'none'
