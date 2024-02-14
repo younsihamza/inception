@@ -14,7 +14,7 @@ services:
       - wordpress
     restart: always
     volumes:
-      - /home/hyounsi/data/wordpress:/var/www/wordpress
+      - wordpress:/var/www/wordpress
   mariadb:
     container_name: mariadb
     build: 

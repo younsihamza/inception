@@ -1,6 +1,6 @@
 
 up : check_file_is_exist
-	 @cd srcs &&  sudo docker compose -f docker-compose.yml up -d
+	 @cd srcs &&  sudo docker compose -f docker-compose.yml up 
 stop :
 	@cd srcs &&  sudo docker compose -f docker-compose.yml stop
 build : check_file_is_exist
