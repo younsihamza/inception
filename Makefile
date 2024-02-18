@@ -1,25 +1,23 @@
 
 up : check_file_is_exist
-	 @cd srcs &&  sudo docker compose -f docker-compose.yml up 
+	@sudo docker compose -f srcs/docker-compose.yml up
 stop :
-	@cd srcs &&  sudo docker compose -f docker-compose.yml stop
+	@sudo docker compose -f srcs/docker-compose.yml stop
 build : check_file_is_exist
-	@cd srcs &&  sudo docker compose -f docker-compose.yml build
+	@sudo docker compose -f srcs/docker-compose.yml build
 
 start :
-	@cd srcs &&  sudo docker compose -f docker-compose.yml start
-
+	@sudo docker compose -f srcs/docker-compose.yml start
 down :
-	@cd srcs &&  sudo docker compose -f docker-compose.yml down
+	@sudo docker compose -f srcs/docker-compose.yml down
 check_file_is_exist:
 	@if [ ! -d "/home/hyounsi/data/mariadb" ]; then \
-		mkdir -p /home/hyounsi/data/mariadb; \
+		mkdir -p /home/hyounsi/data/mariadb && chmod 777  /home/hyounsi/data/mariadb;\
 	fi
 	@if [ ! -d "/home/hyounsi/data/wordpress" ]; then \
-		mkdir -p /home/hyounsi/data/wordpress; \
+		mkdir -p /home/hyounsi/data/wordpress && chmod 777  /home/hyounsi/data/wordpress; \
 	fi
-
-clean:
+fclean:
 	@if [ -n "$(shell sudo docker ps -aq)" ]; then \
 		sudo docker stop $(shell sudo docker ps -aq); \
 		sudo docker rm -f $(shell sudo docker ps -aq); \

@@ -6,8 +6,6 @@ services:
       - inception
     build: ./requirements/nginx/.
     image: nginx:hyounsi
-    env_file:
-      - .env
     ports:
       - 443:443
     depends_on:
@@ -31,8 +29,21 @@ services:
       - mariadb:/var/lib/mysql
     restart: always
   wordpress:
-    env_file:
-      - .env
+    environment:
+      DATABASE_USER_NAME: ${DATABASE_USER_NAME}
+      DATABASE_USER_PASSWORD: ${DATABASE_USER_PASSWORD}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      WP_URL: ${WP_URL}
+      WP_TITLE: ${WP_TITLE}
+      WP_ADMIN_USER: ${WP_ADMIN_USER}
+      WP_ADMIN_PASSWORD: ${WP_ADMIN_PASSWORD}
+      WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
+      NEW_USER_NAME: ${NEW_USER_NAME}
+      NEW_USER_PASSWORD: ${NEW_USER_PASSWORD}
+      NEW_USER_EMAIL: ${NEW_USER_EMAIL}
+      NEW_USER_ROLE: ${NEW_USER_ROLE}
     container_name: wordpress
     build: ./requirements/wordpress/.
     image: wordpress:hyounsi
@@ -46,21 +57,20 @@ services:
 networks:
   inception:
     name: inception
+    
 
 volumes:
   mariadb:
     name: mariadb
     driver: local 
     driver_opts:
-      type: 'none'
-      o: 'bind'
+      type: 'bind'
       device: '/home/hyounsi/data/mariadb'
   wordpress:
     name: wordpress
-    driver: local 
+    driver: local
     driver_opts:
-      type: 'none'
-      o: 'bind'
+      type: 'bind'
       device: '/home/hyounsi/data/wordpress' 
 
     
