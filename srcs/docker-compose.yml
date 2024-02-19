@@ -62,13 +62,13 @@ volumes:
     name: mariadb
     driver: local 
     driver_opts:
-      type: 'bind'
+      type: 'none'
       o: 'bind'
       device: '/home/hyounsi/data/mariadb'
   wordpress:
     name: wordpress
     driver: local
     driver_opts:
-      type: 'bind'
+      type: 'none'
       o: 'bind'
       device: '/home/hyounsi/data/wordpress'
