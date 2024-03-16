@@ -1,36 +1,36 @@
 
 up : check_file_is_exist
-	@sudo docker compose -f srcs/docker-compose.yml up
+	@docker compose -f srcs/docker-compose.yml up
 stop :
-	@sudo docker compose -f srcs/docker-compose.yml stop
+	@docker compose -f srcs/docker-compose.yml stop
 build : check_file_is_exist
-	@sudo docker compose -f srcs/docker-compose.yml build
+	@docker compose -f srcs/docker-compose.yml build
 
 start :
-	@sudo docker compose -f srcs/docker-compose.yml start
+	@docker compose -f srcs/docker-compose.yml start
 down :
-	@sudo docker compose -f srcs/docker-compose.yml down
+	@docker compose -f srcs/docker-compose.yml down
 check_file_is_exist:
-	@if [ ! -d "/home/hyounsi/data/mariadb" ]; then \
-		mkdir -p /home/hyounsi/data/mariadb && chmod 777  /home/hyounsi/data/mariadb;\
+	@if [ ! -d "$(HOME)/data/mariadb" ]; then \
+		mkdir -p $(HOME)/data/mariadb && chmod 777  $(HOME)/data/mariadb;\
 	fi
-	@if [ ! -d "/home/hyounsi/data/wordpress" ]; then \
-		mkdir -p /home/hyounsi/data/wordpress && chmod 777  /home/hyounsi/data/wordpress; \
+	@if [ ! -d "$(HOME)/data/wordpress" ]; then \
+		mkdir -p $(HOME)/data/wordpress && chmod 777  $(HOME)/data/wordpress; \
 	fi
 fclean:
-	@if [ -n "$(shell sudo docker ps -aq)" ]; then \
-		sudo docker stop $(shell sudo docker ps -aq); \
-		sudo docker rm -f $(shell sudo docker ps -aq); \
+	@if [ -n "$(shell docker ps -aq)" ]; then \
+		docker stop $(shell docker ps -aq); \
+		docker rm -f $(shell docker ps -aq); \
 	fi
-	@sudo rm -fr /home/hyounsi/data/wordpress
-	@sudo rm -fr /home/hyounsi/data/mariadb 
-	@if [ -n "$(shell sudo docker images -q)" ]; then \
-		sudo docker rmi -f $(shell sudo docker images -aq); \
+	@rm -fr $(HOME)/data/wordpress
+	@rm -fr $(HOME)/data/mariadb 
+	@if [ -n "$(shell docker images -q)" ]; then \
+		docker rmi -f $(shell docker images -aq); \
 	fi
-	@if [ -n "$(shell sudo docker volume ls -q)" ]; then \
-		sudo docker volume rm $(shell sudo docker volume ls -q); \
+	@if [ -n "$(shell docker volume ls -q)" ]; then \
+		docker volume rm $(shell docker volume ls -q); \
 	fi
-	@if [ $(shell sudo docker network ls -f name=inception | wc -l) -eq 2 ]; then \
-		sudo docker network rm inception; \
+	@if [ $(shell docker network ls -f name=inception | wc -l) -eq 2 ]; then \
+		docker network rm inception; \
 	fi
-	sudo docker system prune -a -f
+	docker system prune -a -f
